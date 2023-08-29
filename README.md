@@ -1,0 +1,1 @@
+Widget del clima (consumiendo la api de http://api.openweathermap.org/data/2.5/weather?)
