@@ -113,10 +113,3 @@ document.addEventListener('DOMContentLoaded', () => {
     const defaultLocation = 'Mar del Plata';
     fetchWeatherData(defaultLocation);
 });
-
-locButton.addEventListener('click', () => {
-    const location = prompt('Enter a location :');
-    if (!location) return;
-
-    fetchWeatherData(location);
-});
