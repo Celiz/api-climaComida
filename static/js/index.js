@@ -27,96 +27,103 @@ const weatherIconMap = {
     '50n': 'water'
 };
 
-function fetchWeatherData(location) {
-    // Construct the API url with the location and api key
-    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${apiKey}&units=metric&lang=es`;
+function fetchWeatherDataByCoords(latitude, longitude) {
+    // Construir la URL de la API con la latitud, longitud, clave de API y configuración de idioma en español
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric&lang=es`;
 
-    // Fetch weather data from api
-    fetch(apiUrl).then(response => response.json()).then(data => {
-        // Update todays info
-        const todayWeather = data.list[0].weather[0].description;
-        const todayTemperature = `${Math.round(data.list[0].main.temp)}°C`;
-        const todayWeatherIconCode = data.list[0].weather[0].icon;
+    // Obtener datos meteorológicos de la API
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const todayWeather = data.list[0].weather[0].description;
+            const todayTemperature = `${Math.round(data.list[0].main.temp)}°C`;
+            const todayWeatherIconCode = data.list[0].weather[0].icon;
 
-        todayInfo.querySelector('h2').textContent = new Date().toLocaleDateString('es', { weekday: 'long' });
-        todayInfo.querySelector('span').textContent = new Date().toLocaleDateString('es', { month: 'long', day: 'numeric' });
-        todayWeatherIcon.className = `bx bx-${weatherIconMap[todayWeatherIconCode]}`;
-        todayTemp.textContent = todayTemperature;
+            const todayDayName = new Date().toLocaleDateString('es', { weekday: 'long' });
+            const todayDayNameCapitalized = todayDayName.charAt(0).toUpperCase() + todayDayName.slice(1);
 
-        // Update location and weather description in the "left-info" section
-        const locationElement = document.querySelector('.today-info > div > span');
-        locationElement.textContent = `${data.city.name}, ${data.city.country}`;
+            todayInfo.querySelector('h2').textContent = todayDayNameCapitalized;
+            todayInfo.querySelector('span').textContent = new Date().toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' });
+            todayWeatherIcon.className = `bx bx-${weatherIconMap[todayWeatherIconCode]}`;
+            todayTemp.textContent = todayTemperature;
 
-        const weatherDescriptionElement = document.querySelector('.today-weather > h3');
-        weatherDescriptionElement.textContent = todayWeather;
+            // Actualizar la ubicación y la descripción del clima en la sección "left-info"
+            const locationElement = document.querySelector('.today-info > div > span');
+            locationElement.textContent = `${data.city.name}, ${data.city.country}`;
 
-        // Update todays info in the "day-info" section
-        const todayPrecipitation = `${data.list[0].pop}%`;
-        const todayHumidity = `${data.list[0].main.humidity}%`;
-        const todayWindSpeed = `${data.list[0].wind.speed} km/h`;
+            const weatherDescriptionElement = document.querySelector('.today-weather > h3');
+            weatherDescriptionElement.textContent = todayWeather;
 
-        const dayInfoContainer = document.querySelector('.day-info');
-        dayInfoContainer.innerHTML = `
+            // Actualizar la información de hoy en la sección "day-info"
+            const todayPrecipitation = `${data.list[0].pop}%`;
+            const todayHumidity = `${data.list[0].main.humidity}%`;
+            const todayWindSpeed = `${data.list[0].wind.speed} km/h`;
 
-            <div>
-                <span class="title">PRECIPITACIONES</span>
-                <span class="value">${todayPrecipitation}</span>
-            </div>
-            <div>
-                <span class="title">HUMEDAD</span>
-                <span class="value">${todayHumidity}</span>
-            </div>
-            <div>
-                <span class="title">VIENTO</span>
-                <span class="value">${todayWindSpeed}</span>
-            </div>
+            const dayInfoContainer = document.querySelector('.day-info');
+            dayInfoContainer.innerHTML = `
+                <div>
+                    <span class="title">PRECIPITACIÓN</span>
+                    <span class="value">${todayPrecipitation}</span>
+                </div>
+                <div>
+                    <span class="title">HUMEDAD</span>
+                    <span class="value">${todayHumidity}</span>
+                </div>
+                <div>
+                    <span class="title">VIENTO</span>
+                    <span class="value">${todayWindSpeed}</span>
+                </div>
+            `;
 
-        `;
+            // Actualizar el clima de los próximos 4 días
+            const today = new Date();
+            const nextDaysData = data.list.slice(1);
 
-        const today = new Date();
-        const nextDaysData = data.list.slice(1);
+            const uniqueDays = new Set();
+            let count = 0;
+            daysList.innerHTML = '';
+            for (const dayData of nextDaysData) {
+                const forecastDate = new Date(dayData.dt_txt);
+                const dayAbbreviation = forecastDate.toLocaleDateString('es', { weekday: 'short' });
+                const dayTemp = `${Math.round(dayData.main.temp)}°C`;
+                const iconCode = dayData.weather[0].icon;
 
-        const uniqueDays = new Set();
-        let count = 0;
-        daysList.innerHTML = '';
-        for (const dayData of nextDaysData) {
-            const forecastDate = new Date(dayData.dt_txt);
-            const dayAbbreviation = forecastDate.toLocaleDateString('es', { weekday: 'short' });
-            const dayTemp = `${Math.round(dayData.main.temp)}°C`;
-            const iconCode = dayData.weather[0].icon;
+                // Asegurarse de que el día no sea duplicado y no sea hoy
+                if (!uniqueDays.has(dayAbbreviation) && forecastDate.getDate() !== today.getDate()) {
+                    uniqueDays.add(dayAbbreviation);
+                    daysList.innerHTML += `
+                        <li>
+                            <i class='bx bx-${weatherIconMap[iconCode]}'></i>
+                            <span>${dayAbbreviation}</span>
+                            <span class="day-temp">${dayTemp}</span>
+                        </li>
+                    `;
+                    count++;
+                }
 
-            // Ensure the day isn't duplicate and today
-            if (!uniqueDays.has(dayAbbreviation) && forecastDate.getDate() !== today.getDate()) {
-                uniqueDays.add(dayAbbreviation);
-                daysList.innerHTML += `
-                
-                    <li>
-                        <i class='bx bx-${weatherIconMap[iconCode]}'></i>
-                        <span>${dayAbbreviation}</span>
-                        <span class="day-temp">${dayTemp}</span>
-                    </li>
-
-                `;
-                count++;
+                // Detener después de obtener 4 días distintos
+                if (count === 4) break;
             }
-
-            // Stop after getting 4 distinct days
-            if (count === 4) break;
-        }
-    }).catch(error => {
-        alert(`Error fetching weather data: ${error} (Api Error)`);
-    });
+        })
+        .catch(error => {
+            alert(`Error al obtener datos meteorológicos: ${error} (Error de API)`);
+        });
 }
 
-// Fetch weather data on document load for default location (Germany)
 document.addEventListener('DOMContentLoaded', () => {
-    const defaultLocation = 'Mar del Plata';
-    fetchWeatherData(defaultLocation);
+    if (navigator.geolocation) {
+        // Use Geolocation API to get the user's coordinates
+        navigator.geolocation.getCurrentPosition(position => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Call the function to fetch weather data using coordinates
+            fetchWeatherDataByCoords(latitude, longitude);
+        }, error => {
+            alert(`Error getting location: ${error.message}`);
+        });
+    } else {
+        alert('Geolocation is not supported by your browser.');
+    }
 });
 
-locButton.addEventListener('click', () => {
-    const location = prompt('Enter a location :');
-    if (!location) return;
-
-    fetchWeatherData(location);
-});
