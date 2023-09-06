@@ -1,3 +1,5 @@
+import datetime
+import locale
 from flask import Flask, render_template, request, jsonify
 import requests
 
@@ -13,6 +15,11 @@ def weather():
     apiUrl = "http://api.openweathermap.org/data/2.5/weather?"
     latitude = request.args.get('lat')
     longitude = request.args.get('lon')
+    locale.setlocale(locale.LC_TIME, 'es_ES')
+
+    diaSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+    todayEsp = diaSemana[datetime.datetime.now().weekday()]
+    currentDate = datetime.datetime.now().strftime('%d %B %Y')
 
     complete_url = apiUrl + f"appid={apikey}&lat={latitude}&lon={longitude}&units=metric&lang=es"
     response = requests.get(complete_url)
@@ -35,12 +42,14 @@ def weather():
             "description": todayDescription,
             "feels_like": round(todayFeelsLike),
             "icon": todayIcon,
-            "clouds": todayClouds
+            "clouds": todayClouds,
+            "today": todayEsp,
+            "date": currentDate
         }
 
         return jsonify(weather_data)
     else:
         return jsonify({"error": "City Not Found"})
-
+    
 if __name__ == '__main__':
     app.run()
