@@ -2,7 +2,7 @@
 <head>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script>
+    <script> 
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 var latitude = position.coords.latitude;
@@ -25,6 +25,7 @@
             console.log('Geolocation is not available');
         }
         </script>
+          
 </head>
 <body>
     <div class="container">
