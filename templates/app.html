@@ -5,66 +5,75 @@
     <script src="{{url_for('static', filename='js/ubication.js')}}"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="left-info">
-            <div class="pic-gradient"></div>
-            <div class="today-info">
-                <h2>Viernes</h2>
-                <span>28 Julio 2023</span>
-                <div>
-                    <i class='bx bx-current-location'></i>
-                    <span>Loading...</span>
+    <main>
+        <h1 class="title-app">ClimaComida</h1>
+        <div class="container">
+            <div class="left-info">
+                <div class="pic-gradient"></div>
+                <div class="today-info">
+                    <h2>Viernes</h2>
+                    <span>28 Julio 2023</span>
+                    <div>
+                        <i class='bx bx-current-location'></i>
+                        <span>Loading...</span>
+                    </div>
                 </div>
-            </div>
-            <div class="today-weather">
-                <i class='bx bx-sun'></i>
-                <h1 class="weather-temp" id="temperature">
-                    Loading...
-                </h1>
-                <h3 id="description">Loading...</h3>
-            </div>
-        </div>
-
-        <div class="right-info">
-            <div class="day-info">
-                <div>
-                    <span class="title">Precipitaciones</span>
-                    <span class="value" id="clouds">Loading...</span>
-                </div>
-                <div>
-                    <span class="title">Humedad</span>
-                    <span class="value" id="humidity">Loading...</span>
-                </div>
-                <div>
-                    <span class="title">Viento</span>
-                    <span class="value" id="wind">Loading...</span>
-                </div>
-            </div>
-
-            <ul class="days-list">
-                <li>
-                    <i class='bx bx-cloud'></i>
-                    <span>Sab</span>
-                    <span class="day-temp">23°C</span>
-                </li>
-                <li>
+                <div class="today-weather">
                     <i class='bx bx-sun'></i>
-                    <span>Dom</span>
-                    <span class="day-temp">28°C</span>
-                </li>
-                <li>
-                    <i class='bx bx-cloud-rain'></i>
-                    <span>Lun</span>
-                    <span class="day-temp">02°C</span>
-                </li>
-                <li>
-                    <i class='bx bx-cloud-drizzle'></i>
-                    <span>Mar</span>
-                    <span class="day-temp">14°C</span>
-                </li>
-            </ul>
+                    <h1 class="weather-temp" id="temperature">
+                        Loading...
+                    </h1>
+                    <h3 id="description">Loading...</h3>
+                </div>
+            </div>
+    
+            <div class="right-info">
+                <div class="day-info">
+                    <div>
+                        <span class="title">Precipitaciones</span>
+                        <span class="value" id="clouds">Loading...</span>
+                    </div>
+                    <div>
+                        <span class="title">Humedad</span>
+                        <span class="value" id="humidity">Loading...</span>
+                    </div>
+                    <div>
+                        <span class="title">Viento</span>
+                        <span class="value" id="wind">Loading...</span>
+                    </div>
+                </div>
+    
+                <ul class="days-list">
+                    <li>
+                        <i class='bx bx-cloud'></i>
+                        <span>Sab</span>
+                        <span class="day-temp">23°C</span>
+                    </li>
+                    <li>
+                        <i class='bx bx-sun'></i>
+                        <span>Dom</span>
+                        <span class="day-temp">28°C</span>
+                    </li>
+                    <li>
+                        <i class='bx bx-cloud-rain'></i>
+                        <span>Lun</span>
+                        <span class="day-temp">02°C</span>
+                    </li>
+                    <li>
+                        <i class='bx bx-cloud-drizzle'></i>
+                        <span>Mar</span>
+                        <span class="day-temp">14°C</span>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
+        <p>
+            Esta aplicación fue creada con fines de solucionar uno de los problemas mas cotidianos de la vida,
+            saber que comer, para esto creamos {nombreApp} que te ayudara a saber que comer dependiendo del clima
+        </p>
+    </main>
+
+    
 </body>
 </html>
 

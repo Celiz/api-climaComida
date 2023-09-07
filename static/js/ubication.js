@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
               locationElement.textContent = `${response.city}, ${response.country}`;
   
               // Actualizar información en la sección "day-info"
-              const todayPrecipitation = `${response.clouds}%`;
+              const todayPrecipitation = `${response.pop * 100}%`;
               const todayHumidity = `${response.humidity}%`;
               const todayWindSpeed = `${response.wind} km/h`;
   

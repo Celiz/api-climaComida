@@ -14,8 +14,14 @@ body{
     
 }
 
+.title-app{
+    text-align: center;
+    margin: 0 auto;
+}
+
 .container{
-    margin:10px;
+    margin-left: 450px;
+    width: 605px;
     height: 300px;
     background-color: #232931;
     color: #fff;

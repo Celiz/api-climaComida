@@ -44,6 +44,7 @@ def format_weather_data(data):
             "feelsLike": round(main_data["feels_like"]),
             "icon": weather_data["icon"],
             "clouds": clouds_data["all"],
+            "pop": data["list"][0]["pop"],
             "today": today,
             "date": date,
             "wind": round(wind_data["speed"]*2.63),
