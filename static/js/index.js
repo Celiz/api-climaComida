@@ -30,7 +30,7 @@ const weatherIconMap = {
 function fetchWeatherData(location) {
     // Construct the API url with the location and api key
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${apiKey}&units=metric&lang=es`;
-
+    console.log(apiUrl)
     // Fetch weather data from api
     fetch(apiUrl).then(response => response.json()).then(data => {
         // Update todays info

@@ -66,6 +66,27 @@ document.addEventListener("DOMContentLoaded", function () {
                   <span class="value">${todayWindSpeed}</span>
                 </div>
               `;
+
+              const uniqueDays = new Set();
+              for(let i = 0; i < response.nextDaysData.length; i++) {
+
+                const day = response.nextDaysData[i];
+                const dayName = day.day;
+                const dayTemp = day.max;
+                const dayIcon = day.icon;
+
+                if(!uniqueDays.has(dayName)) {
+                  uniqueDays.add(dayName);
+                  daysList.innerHTML += `
+                  <li>
+                    <i class="bx bx-${weatherIconMap[dayIcon]}"></i>
+                    <span>${dayName}</span>
+                    <span class="day-temp">${dayTemp}°C</span>
+                  </li>
+                  `;
+                }
+              }
+
             } else {
               console.error("Error al obtener datos del clima:", xhr.status);
             }

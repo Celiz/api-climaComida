@@ -29,14 +29,35 @@ def format_weather_data(data):
         today = today.capitalize()
         date = datetime.datetime.now().strftime('%d %B %Y')
         
-        nextDaysData = []
+        nextDays = []
         for i in range(1, 5):
             nextDay = datetime.datetime.now() + datetime.timedelta(days=i)
             nextDay = nextDay.strftime('%A')
             nextDay = nextDay.capitalize()
-            nextDaysData.append(nextDay)
+            nextDay = nextDay[:3]
+            
+            nextDays.append(nextDay)
+            
+            nextDaysData = data["list"][i]["main"]
+            
+            nextDaysData = {
+                "temperature": round(nextDaysData["temp"]),
+                "icon": data["list"][i]["weather"][0]["icon"],
+                "pop": data["list"][i]["pop"],
+                "max": round(data["list"][i]["main"]["temp_max"]),
+            }
+            
+            nextDays[i-1] = {
+                "day": nextDays[i-1],
+                "data": nextDaysData,
+                "icon": data["list"][i]["weather"][0]["icon"],
+                "pop": data["list"][i]["pop"],
+                "temperature": round(nextDaysData["temperature"]),
+                "max": round(nextDaysData["max"])
+            }
+            
 
-
+            
         formatted_data = {
             "temperature": round(main_data["temp"]),
             "humidity": main_data["humidity"],
@@ -50,8 +71,8 @@ def format_weather_data(data):
             "wind": round(wind_data["speed"]*2.63),
             "city": data["city"]["name"],
             "country": data["city"]["country"],
-            "nextDaysData": nextDaysData
-
+            "nextDaysData": nextDays,
+            "maxTemp": round(main_data["temp_max"]),
         }
 
         print(formatted_data)
