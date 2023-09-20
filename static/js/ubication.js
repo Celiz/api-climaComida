@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
   
         const todayInfo = document.querySelector(".today-info");
         const todayWeatherIcon = document.querySelector(".today-weather i");
-        const todayTemp = document.querySelector(".weather-temp");
         const daysList = document.querySelector(".days-list");
         const locationElement = document.querySelector('.today-info > div > span');
   
@@ -38,6 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
           if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
               const response = JSON.parse(xhr.responseText);
+
+              console.log(response);
   
               todayInfo.querySelector("h2").textContent = response.today;
               todayInfo.querySelector("span").textContent = response.date;
@@ -92,10 +93,34 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           }
         };
-        xhr.send();
-      });
-    } else {
-      console.log("La geolocalización no está disponible");
+
+    xhr.send();
+    });
+  } else {
+    console.error("El navegador no soporta geolocalización");
+  }
+
+
+  navigator.geolocation.getCurrentPosition(function (position) {
+
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", `/provincia?lat=${latitude}&lon=${longitude}`, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        console.log(response);
+      } else {
+        console.error("Error al obtener datos del clima:", xhr.status);
+      }
     }
-  });
+  };  
+  xhr.send();
+});
+
+});
+
   

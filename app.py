@@ -18,6 +18,22 @@ def get_weather_data(latitude, longitude):
     print(complete_url)
     return data
 
+def get_provincia(latitude, longitude):
+    complete_url = f"https://apis.datos.gob.ar/georef/api/ubicacion?lat={latitude}&lon={longitude}"
+    response = requests.get(complete_url)
+    data = response.json()
+    
+    return data
+
+def format_provincia_data(data):
+    if data.get("cantidad") != 0:
+        data_provincia = {
+            "provincia": data["ubicacion"]["provincia"]["nombre"]
+        }
+        return data_provincia
+    else:
+        return None
+    
 def format_weather_data(data):
     if data.get("cod") != 404:
         main_data = data["list"][0]["main"]
@@ -56,8 +72,6 @@ def format_weather_data(data):
                 "max": round(nextDaysData["max"])
             }
             
-
-            
         formatted_data = {
             "temperature": round(main_data["temp"]),
             "humidity": main_data["humidity"],
@@ -89,12 +103,29 @@ def weather():
     latitude = request.args.get('lat')
     longitude = request.args.get('lon')
     
-    weather_data = get_weather_data(latitude, longitude)
+    weather_data = get_weather_data(latitude, longitude)   
 
     if weather_data:
-        formatted_data = format_weather_data(weather_data)
-        if formatted_data:
-            return jsonify(formatted_data)
+        formatted_weather_data = format_weather_data(weather_data)
+        if formatted_weather_data:
+            return jsonify(formatted_weather_data)
+        else:
+            return jsonify({"error": "City Not Found"})
+    else:
+        return jsonify({"error": "Weather data not available"})
+    
+    
+@app.route('/provincia')
+def provincia():
+    latitude = request.args.get('lat')
+    longitude = request.args.get('lon')
+    
+    provincia_data = get_provincia(latitude, longitude)
+    
+    if provincia_data:
+        formatted_provincia_data = format_provincia_data(provincia_data)
+        if formatted_provincia_data:
+            return jsonify(formatted_provincia_data)
         else:
             return jsonify({"error": "City Not Found"})
     else:
