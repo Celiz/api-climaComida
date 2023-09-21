@@ -1,0 +1,44 @@
+{
+  "Región Norte": {
+    "provincias": [
+      "Salta",
+      "Jujuy",
+      "Tucumán",
+      "Catamarca",
+      "La Rioja",
+      "Santiago del Estero"
+    ]
+  },
+  "Región Noreste": {
+    "provincias": [
+      "Formosa",
+      "Chaco",
+      "Corrientes",
+      "Misiones"
+    ]
+  },
+  "Región Centro": {
+    "provincias": [
+      "Córdoba",
+      "Santa Fe",
+      "Entre Ríos"
+    ]
+  },
+  "Región Cuyo": {
+    "provincias": [
+      "Mendoza",
+      "San Juan",
+      "San Luis"
+    ]
+  },
+  "Región Patagónica": {
+    "provincias": [
+      "La Pampa",
+      "Neuquén",
+      "Río Negro",
+      "Chubut",
+      "Santa Cruz",
+      "Tierra del Fuego, Antártida e Islas del Atlántico Sur"
+    ]
+  }
+}
