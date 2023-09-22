@@ -168,6 +168,34 @@ body {
     margin-right: 200;
 }
 
+
+.receta-card{
+    margin-left: 450px;
+    width: 605px;
+    height: 300px;
+    background-color: #596f8d;
+    color: #fff;
+    border-radius: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+}
+
+.title-card{
+    text-align: center;
+    margin: 0 auto;
+}
+
+.ingredientes-card{
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.preparacion-card{
+    text-align: right;
+    margin-left: 100px;
+}
+
 @media screen and (max-width: 1000px) {
     .container{
         margin-left: 200px;
