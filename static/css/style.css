@@ -18,7 +18,7 @@ body {
 }
 
 .container {
-    margin-left: 450px;
+    margin-left: 400px;
     width: 605px;
     height: 300px;
     background-color: #232931;
@@ -170,8 +170,8 @@ body {
 
 
 .receta-card{
-    margin-left: 450px;
-    width: 605px;
+    margin-left: 100px;
+    width: 400px;
     height: 300px;
     background-color: #596f8d;
     color: #fff;
@@ -195,6 +195,11 @@ body {
     text-align: right;
     margin-left: 100px;
 }
+
+.recetas-container{
+    display: flex;
+}
+
 
 @media screen and (max-width: 1000px) {
     .container{
