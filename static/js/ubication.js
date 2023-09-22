@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const temperatura = weatherData.temperature;
 
           const recetasSugeridas = obtenerRecetasSugeridas(region, temperatura);
-          mostrarRecetas(recetasSugeridas);
+          mostrarRecetas(recetasSugeridas); // Asegúrate de llamar a la función aquí
         });
       });
     }, function (error) {
@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
     console.error("El navegador no soporta geolocalización");
   }
 });
+
+
 function obtenerRecetasSugeridas(region, temperatura) {
   const fechaActual = obtenerFechaActual(); 
   const recetasAlmacenadas = localStorage.getItem(`recetas_${fechaActual}`);
@@ -31,33 +33,34 @@ function obtenerRecetasSugeridas(region, temperatura) {
   } else {
     const recetasPorRegion = {
       "Región Norte": [
-        { nombre: "Empanadas Salteñas", temperaturaIdeal: 25 },
-        { nombre: "Humita en Chala", temperaturaIdeal: 20 },
+        { nombre: "Empanadas Salteñas", ingredientes: ["carne molida", "cebolla", "aceitunas", "huevo"], temperaturaIdeal: 25 },
+        { nombre: "Humita en Chala", ingredientes: ["choclo", "queso", "cebolla", "manteca"], temperaturaIdeal: 20 },
         // Otras recetas para la Región Norte
       ],
       "Región Centro": [
-        { nombre: "Asado Criollo", temperaturaIdeal: 30 },
-        { nombre: "Milanesa a la Napolitana", temperaturaIdeal: 25 },
-        { nombre: "Ñoquis", temperaturaIdeal: 20 },
-        { nombre: "Locro", temperaturaIdeal: 15 },
-        { nombre: "Tarta de Jamón y Queso", temperaturaIdeal: 10 },  
+        { nombre: "Asado Criollo", ingredientes: ["carne asada", "sal", "pimienta"], temperaturaIdeal: 30 },
+        { nombre: "Milanesa a la Napolitana", ingredientes: ["filete de carne", "pan rallado", "jamón", "queso", "salsa de tomate"], temperaturaIdeal: 25 },
+        { nombre: "Ñoquis", ingredientes: ["papa", "harina", "sal"], temperaturaIdeal: 20 },
+        { nombre: "Locro", ingredientes: ["maíz", "carne", "chorizo", "cebolla", "pimiento", "pimentón"], temperaturaIdeal: 15 },
+        { nombre: "Tarta de Jamón y Queso", ingredientes: ["masa de tarta", "jamón", "queso", "huevos", "crema"], temperaturaIdeal: 10 },
       ],
       "Región Noreste": [
-        { nombre: "Chipá", temperaturaIdeal: 30 },
-        { nombre: "Sopa Paraguaya", temperaturaIdeal: 25 },
+        { nombre: "Chipá", ingredientes: ["almidón de mandioca", "queso", "huevo"], temperaturaIdeal: 30 },
+        { nombre: "Sopa Paraguaya", ingredientes: ["harina de maíz", "cebolla", "queso", "leche"], temperaturaIdeal: 25 },
         // Otras recetas para la Región Noreste
       ],
       "Región Cuyo": [
-        { nombre: "Carbonada", temperaturaIdeal: 30 },
-        { nombre: "Pastelitos", temperaturaIdeal: 25 },
+        { nombre: "Carbonada", ingredientes: ["carne", "papa", "choclo", "cebolla", "tomate"], temperaturaIdeal: 30 },
+        { nombre: "Pastelitos", ingredientes: ["masa para pastelitos", "dulce de membrillo"], temperaturaIdeal: 25 },
         // Otras recetas para la Región Cuyo
       ],
       "Región Patagónica": [
-        { nombre: "Cordero Patagónico", temperaturaIdeal: 30 },
-        { nombre: "Tortas Fritas", temperaturaIdeal: 25 },
+        { nombre: "Cordero Patagónico", ingredientes: ["cordero", "papa", "cebolla", "zanahoria"], temperaturaIdeal: 30 },
+        { nombre: "Tortas Fritas", ingredientes: ["harina", "levadura", "agua", "sal"], temperaturaIdeal: 25 },
         // Otras recetas para la Región Patagónica
       ],
     };
+    
 
     const recetasRegion = recetasPorRegion[region] || [];
 
@@ -100,12 +103,29 @@ function mostrarRecetas(recetas) {
   const ul = document.createElement("ul");
   recetas.forEach((receta) => {
     const li = document.createElement("li");
-    li.textContent = receta.nombre;
+    const nombreReceta = document.createElement("div");
+    nombreReceta.textContent = receta.nombre;
+    li.appendChild(nombreReceta);
+
+    if (Array.isArray(receta.ingredientes) && receta.ingredientes.length > 0) {
+      const ingredientesReceta = document.createElement("div");
+      ingredientesReceta.textContent = "Ingredientes:";
+      const ulIngredientes = document.createElement("ul");
+      receta.ingredientes.forEach((ingrediente) => {
+        const liIngrediente = document.createElement("li");
+        liIngrediente.textContent = ingrediente;
+        ulIngredientes.appendChild(liIngrediente);
+      });
+      ingredientesReceta.appendChild(ulIngredientes);
+      li.appendChild(ingredientesReceta);
+    }
+
     ul.appendChild(li);
   });
-
   recetasContainer.appendChild(ul);
 }
+
+
 
 function fetchWeatherData(latitude, longitude, callback) {
   const xhr = new XMLHttpRequest();
@@ -242,7 +262,3 @@ function encontrarRegion(provincia) {
   }
   return "No se encontró la región para la provincia proporcionada";
 }
-
-
-
-
