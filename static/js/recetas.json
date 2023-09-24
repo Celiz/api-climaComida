@@ -1,0 +1,82 @@
+{
+  "Región Norte": [
+    {
+      "nombre": "Empanadas Salteñas",
+      "ingredientes": ["carne molida", "cebolla", "aceitunas", "huevo"],
+      "temperaturaIdeal": 25
+    },
+
+    {
+      "nombre": "Humita en Chala",
+      "ingredientes": ["choclo", "queso", "cebolla", "manteca"],
+      "temperaturaIdeal": 20
+    },
+
+    {
+      "nombre": "Locro",
+      "pasos": "prueba",
+      "ingredientes": [
+        "maíz",
+        "carne",
+        "chorizo",
+        "cebolla",
+        "pimiento",
+        "pimentón"
+      ],
+      "temperaturaIdeal": 15
+    }
+  ],
+  "Región Centro": [
+    {
+      "nombre": "Asado Criollo",
+      "ingredientes": ["carne asada", "sal", "pimienta"],
+      "temperaturaIdeal": 30
+    },
+    {
+      "nombre": "Milanesa a la Napolitana",
+      "pasos": "prueba",
+      "ingredientes": [
+        "filete de carne",
+        "pan rallado",
+        "jamón",
+        "queso",
+        "salsa de tomate"
+      ],
+      "temperaturaIdeal": 25
+    },
+    {
+      "nombre": "Ñoquis",
+      "ingredientes": ["papa", "harina", "sal"],
+      "temperaturaIdeal": 20
+    },
+    {
+      "nombre": "Tarta de Jamón y Queso",
+      "ingredientes": ["masa de tarta", "jamón", "queso", "huevos", "crema"],
+      "temperaturaIdeal": 10
+    }
+  ],
+  "Región Noreste": [
+    {
+      "nombre": "Chipá",
+      "ingredientes": ["almidón de mandioca", "queso", "huevo"],
+      "temperaturaIdeal": 30
+    },
+    {
+      "nombre": "Sopa Paraguaya",
+      "ingredientes": ["harina de maíz", "cebolla", "queso", "leche"],
+      "temperaturaIdeal": 25
+    }
+  ],
+  "Región Cuyo": [
+    {
+      "nombre": "Carbonada",
+      "ingredientes": ["carne", "papa", "choclo", "cebolla", "tomate"],
+      "temperaturaIdeal": 30
+    },
+    {
+      "nombre": "Pastelitos",
+      "ingredientes": ["masa para pastelitos", "dulce de membrillo"],
+      "temperaturaIdeal": 25
+    }
+  ]
+}
