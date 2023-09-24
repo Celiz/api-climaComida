@@ -1,25 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
   if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const { latitude, longitude } = position.coords;
 
-      fetchWeatherData(latitude, longitude, function (weatherData) {
-        updateWeatherInfo(weatherData);
+        fetchWeatherData(latitude, longitude, function (weatherData) {
+          updateWeatherInfo(weatherData);
 
-        fetchLocationData(latitude, longitude, function (locationData) {
-          const region = encontrarRegion(locationData.provincia);
-          const temperatura = weatherData.temperature;
+          fetchLocationData(latitude, longitude, function (locationData) {
+            const region = encontrarRegion(locationData.provincia);
+            const temperatura = weatherData.temperature;
 
-          const recetasSugeridas = obtenerRecetasSugeridas(region, temperatura);
-          console.log(recetasSugeridas);
+            const recetasSugeridas = obtenerRecetasSugeridas(
+              region,
+              temperatura
+            );
+            console.log(recetasSugeridas);
 
-          mostrarRecetasSugeridas(region, temperatura);
-         
+            mostrarRecetasSugeridas(region, temperatura);
+          });
         });
-      });
-    }, function (error) {
-      console.error("Error en geolocalización:", error.message);
-    });
+      },
+      function (error) {
+        console.error("Error en geolocalización:", error.message);
+      }
+    );
   } else {
     console.error("El navegador no soporta geolocalización");
   }
@@ -65,7 +70,7 @@ async function obtenerRecetasSugeridas(region, temperatura) {
     return JSON.parse(recetaAlmacenada);
   }
 
-  const response = await fetch('../static/js/recetas.json');
+  const response = await fetch("../static/js/recetas.json");
   const recetasPorRegion = await response.json();
 
   if (!recetasPorRegion[region]) {
@@ -81,12 +86,16 @@ async function obtenerRecetasSugeridas(region, temperatura) {
   if (recetasSugeridas.length >= 2) {
     const recetasAleatorias = [];
     while (recetasAleatorias.length < 2) {
-      const recetaAleatoria = recetasSugeridas[Math.floor(Math.random() * recetasSugeridas.length)];
+      const recetaAleatoria =
+        recetasSugeridas[Math.floor(Math.random() * recetasSugeridas.length)];
       if (!recetasAleatorias.includes(recetaAleatoria)) {
         recetasAleatorias.push(recetaAleatoria);
       }
     }
-    localStorage.setItem(`receta_${fechaActual}`, JSON.stringify(recetasAleatorias));
+    localStorage.setItem(
+      `receta_${fechaActual}`,
+      JSON.stringify(recetasAleatorias)
+    );
     return recetasAleatorias;
   } else {
     return [];
@@ -96,7 +105,7 @@ async function obtenerRecetasSugeridas(region, temperatura) {
 function obtenerFechaActual() {
   const fecha = new Date();
   const dia = fecha.getDate();
-  const mes = fecha.getMonth() + 1; 
+  const mes = fecha.getMonth() + 1;
   const año = fecha.getFullYear();
   return `${año}-${mes < 10 ? "0" : ""}${mes}-${dia < 10 ? "0" : ""}${dia}`;
 }
@@ -161,7 +170,6 @@ function updateWeatherInfo(data) {
     "50n": "water",
   };
 
-
   const todayInfo = document.querySelector(".today-info");
   const todayWeatherIcon = document.querySelector(".today-weather i");
   const daysList = document.querySelector(".days-list");
@@ -211,7 +219,7 @@ function updateWeatherInfo(data) {
 }
 
 async function encontrarRegion(provincia) {
-  const response = await fetch('../static/js/provincias.json');
+  const response = await fetch("../static/js/provincias.json");
   const provinciasPorRegion = await response.json();
 
   for (const region in provinciasPorRegion) {
