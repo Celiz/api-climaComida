@@ -210,28 +210,18 @@ function updateWeatherInfo(data) {
   }
 }
 
-function encontrarRegion(provincia) {
-  const datos = {
-    "Región Norte": {
-      "provincias": ["Salta", "Jujuy", "Tucumán", "Catamarca", "La Rioja", "Santiago del Estero"]
-    },
-    "Región Noreste": {
-      "provincias": ["Formosa", "Chaco", "Corrientes", "Misiones"]
-    },
-    "Región Centro": {
-      "provincias": ["Córdoba", "Santa Fe", "Entre Ríos", "La Pampa", "Buenos Aires", "Ciudad Autónoma de Buenos Aires"]
-    },
-    "Región Cuyo": {
-      "provincias": ["Mendoza", "San Juan", "San Luis"]
-    },
-    "Región Patagónica": {
-      "provincias": ["Neuquén", "Río Negro", "Chubut", "Santa Cruz", "Tierra del Fuego, Antártida e Islas del Atlántico Sur"]
-    }
-  };
-  for (const region in datos) {
-    if (datos[region].provincias.includes(provincia)) {
-      return region;
+async function encontrarRegion(provincia) {
+  const response = await fetch('../static/js/provincias.json');
+  const provinciasPorRegion = await response.json();
+
+  for (const region in provinciasPorRegion) {
+    if (provinciasPorRegion.hasOwnProperty(region)) {
+      const provincias = provinciasPorRegion[region].provincias;
+      if (provincias.includes(provincia)) {
+        return region;
+      }
     }
   }
-  return "No se encontró la región para la provincia proporcionada";
+  console.error(`No se encontró la región para la provincia ${provincia}`);
+  return null;
 }
