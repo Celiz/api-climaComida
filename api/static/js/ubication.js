@@ -56,7 +56,7 @@ function fetchLocationData(latitude, longitude, callback) {
 
 function obtenerRecetasSugeridas(region, temperatura) {
   const fechaActual = obtenerFechaActual(); 
-  localStorage.removeItem(`recetas_${fechaActual}`);
+
   const recetasAlmacenadas = localStorage.getItem(`recetas_${fechaActual}`);
   if (recetasAlmacenadas) {
     return JSON.parse(recetasAlmacenadas);
@@ -122,21 +122,23 @@ function obtenerFechaActual() {
 function mostrarComidas(recetas) {
   const recetasContainer = document.querySelector(".recetas-container");
   recetasContainer.innerHTML = "";
-
-  for (const receta of recetas) {
+  for (let i = 0; i < 2 && i < recetas.length; i++) {
+    const receta = recetas[i];
     const recetaCard = document.createElement("div");
     recetaCard.className = "receta-card";
+
+    if (i === 1) {
+      recetaCard.id = "second-card";
+    }
 
     const tituloReceta = document.createElement("h3");
     tituloReceta.className = "title-card";
     tituloReceta.textContent = receta.nombre;
     recetaCard.appendChild(tituloReceta);
-
     const preparacionReceta = document.createElement("p");
     preparacionReceta.className = "preparacion-card";
-    preparacionReceta.textContent = "Preparación: " + receta.pasos;
+    preparacionReceta.textContent = "Preparación: " + receta.preparacion;
     recetaCard.appendChild(preparacionReceta);
-
     const ingredientesReceta = document.createElement("ul");
     ingredientesReceta.className = "ingredientes-card";
     receta.ingredientes.forEach((ingrediente) => {
@@ -145,10 +147,9 @@ function mostrarComidas(recetas) {
       ingredientesReceta.appendChild(li);
     });
     recetaCard.appendChild(ingredientesReceta);
-
     recetasContainer.appendChild(recetaCard);
   }
-} 
+}
 
 function updateWeatherInfo(data) {
   const weatherIconMap = {
