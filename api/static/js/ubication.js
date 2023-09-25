@@ -70,36 +70,99 @@ async function obtenerRecetasSugeridas(region, temperatura) {
     return JSON.parse(recetaAlmacenada);
   }
 
-  const response = await fetch("../static/js/recetas.json");
-  const recetasPorRegion = await response.json();
+ datos = {
+  "Región Norte": [
+    {
+      "nombre": "Empanadas Salteñas",
+      "ingredientes": ["carne molida", "cebolla", "aceitunas", "huevo"],
+      "temperaturaIdeal": 25
+    },
 
-  if (!recetasPorRegion[region]) {
-    console.error(`No se encontraron recetas para la región ${region}`);
-    return [];
-  }
+    {
+      "nombre": "Humita en Chala",
+      "ingredientes": ["choclo", "queso", "cebolla", "manteca"],
+      "temperaturaIdeal": 20
+    },
 
-  const recetasRegion = recetasPorRegion[region];
-  const recetasSugeridas = recetasRegion.filter((receta) => {
-    return temperatura <= receta.temperaturaIdeal;
-  });
-
-  if (recetasSugeridas.length >= 2) {
-    const recetasAleatorias = [];
-    while (recetasAleatorias.length < 2) {
-      const recetaAleatoria =
-        recetasSugeridas[Math.floor(Math.random() * recetasSugeridas.length)];
-      if (!recetasAleatorias.includes(recetaAleatoria)) {
-        recetasAleatorias.push(recetaAleatoria);
-      }
+    {
+      "nombre": "Locro",
+      "pasos": "prueba",
+      "ingredientes": [
+        "maíz",
+        "carne",
+        "chorizo",
+        "cebolla",
+        "pimiento",
+        "pimentón"
+      ],
+      "temperaturaIdeal": 15
     }
-    localStorage.setItem(
-      `receta_${fechaActual}`,
-      JSON.stringify(recetasAleatorias)
-    );
-    return recetasAleatorias;
-  } else {
-    return [];
-  }
+  ],
+  "Región Centro": [
+    {
+      "nombre": "Asado Criollo",
+      "ingredientes": ["carne asada", "sal", "pimienta"],
+      "temperaturaIdeal": 30
+    },
+    {
+      "nombre": "Milanesa a la Napolitana",
+      "pasos": "prueba",
+      "ingredientes": [
+        "filete de carne",
+        "pan rallado",
+        "jamón",
+        "queso",
+        "salsa de tomate"
+      ],
+      "temperaturaIdeal": 25
+    },
+    {
+      "nombre": "Ñoquis",
+      "ingredientes": ["papa", "harina", "sal"],
+      "temperaturaIdeal": 20
+    },
+    {
+      "nombre": "Tarta de Jamón y Queso",
+      "ingredientes": ["masa de tarta", "jamón", "queso", "huevos", "crema"],
+      "temperaturaIdeal": 10
+    }
+  ],
+  "Región Noreste": [
+    {
+      "nombre": "Chipá",
+      "ingredientes": ["almidón de mandioca", "queso", "huevo"],
+      "temperaturaIdeal": 30
+    },
+    {
+      "nombre": "Sopa Paraguaya",
+      "ingredientes": ["harina de maíz", "cebolla", "queso", "leche"],
+      "temperaturaIdeal": 25
+    }
+  ],
+  "Región Cuyo": [
+    {
+      "nombre": "Carbonada",
+      "ingredientes": ["carne", "papa", "choclo", "cebolla", "tomate"],
+      "temperaturaIdeal": 30
+    },
+    {
+      "nombre": "Pastelitos",
+      "ingredientes": ["masa para pastelitos", "dulce de membrillo"],
+      "temperaturaIdeal": 25
+    }
+  ]
+}
+
+  const recetas = datos[region];
+  const recetasSugeridas = recetas.filter(
+    (receta) => receta.temperaturaIdeal <= temperatura
+  );
+  localStorage.setItem(
+    `receta_${fechaActual}`,
+    JSON.stringify(recetasSugeridas)
+  );
+  return recetasSugeridas;
+
 }
 
 function obtenerFechaActual() {
@@ -224,17 +287,24 @@ function updateWeatherInfo(data) {
 }
 
 async function encontrarRegion(provincia) {
-  const response = await fetch("../static/js/provincias.json");
-  const provinciasPorRegion = await response.json();
-
-  for (const region in provinciasPorRegion) {
-    if (provinciasPorRegion.hasOwnProperty(region)) {
-      const provincias = provinciasPorRegion[region].provincias;
-      if (provincias.includes(provincia)) {
-        return region;
-      }
+  datos = {
+    "Región Norte": {
+      "provincias": ["Salta", "Jujuy", "Tucumán", "Catamarca", "La Rioja", "Santiago del Estero"]
+    },
+    "Región Noreste": {
+      "provincias": ["Formosa", "Chaco", "Corrientes", "Misiones"]
+    },
+    "Región Centro": {
+      "provincias": ["Córdoba", "Santa Fe", "Entre Ríos", "La Pampa", "Buenos Aires", "Ciudad Autónoma de Buenos Aires"]
+    },
+    "Región Cuyo": {
+      "provincias": ["Mendoza", "San Juan", "San Luis"]
+    },
+    "Región Patagónica": {
+      "provincias": ["Neuquén", "Río Negro", "Chubut", "Santa Cruz", "Tierra del Fuego, Antártida e Islas del Atlántico Sur"]
     }
   }
-  console.error(`No se encontró la región para la provincia ${provincia}`);
-  return null;
+
+  
+
 }
