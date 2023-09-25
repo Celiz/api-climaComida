@@ -19,11 +19,19 @@ def get_weather_data(latitude, longitude):
     return data
 
 def get_provincia(latitude, longitude):
-    complete_url = f"https://apis.datos.gob.ar/georef/api/ubicacion?lat={latitude}&lon={longitude}"
-    response = requests.get(complete_url)
-    data = response.json()
-    
-    return data
+    url = f'https://nominatim.openstreetmap.org/reverse?lat={latitude}&lon={longitude}&format=jsonv2'
+    response = requests.get(url)
+    if response.status_code != 200:
+        error_message = f'Error al obtener datos de ubicación: {response.status_code}'
+        print(error_message)
+        return {'error': error_message}
+    try:
+        data = response.json()
+    except ValueError as e:
+        error_message = f'Error al decodificar JSON: {e}'
+        print(error_message)
+        return {'error': error_message}
+    return {'provincia': data['address']['state']}
 
 def format_provincia_data(data):
     if data.get("cantidad") != 0:
