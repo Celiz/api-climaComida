@@ -46,20 +46,14 @@ function fetchWeatherData(latitude, longitude, callback) {
   xhr.send();
 }
 
-function fetchLocationData(latitude, longitude, callback) {
-  const xhr = new XMLHttpRequest();
-  xhr.open("GET", `/provincia?lat=${latitude}&lon=${longitude}`, true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-      if (xhr.status === 200) {
-        const locationData = JSON.parse(xhr.responseText);
-        callback(locationData);
-      } else {
-        console.error("Error al obtener datos de ubicación: " + xhr.status);
-      }
-    }
-  };
-  xhr.send();
+async function fetchLocationData(latitude, longitude) {
+  const response = await fetch(`/provincia?lat=${latitude}&lon=${longitude}`);
+  if (!response.ok) {
+    const errorMessage = `Error al obtener datos de ubicación: ${response.status}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+  return await response.json();
 }
 
 async function obtenerRecetasSugeridas(region, temperatura) {
