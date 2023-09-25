@@ -167,9 +167,8 @@ body {
     margin-right: 200;
 }
 
-
 .receta-card{
-    margin-left: 100px;
+    margin-left: 200px;
     width: 400px;
     height: 300px;
     background-color: #596f8d;
@@ -200,9 +199,23 @@ body {
     display: flex;
 }
 
+#second-card{
+    margin-left: 200px;
+}
+
 
 @media screen and (max-width: 1000px) {
     .container{
         margin-left: 200px;
     }
+
+    .receta-card{
+        margin-left: 50px;
+    }
+
+    #second-card{
+        margin-left: 80px;
+    }
+
+
 }

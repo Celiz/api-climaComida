@@ -125,6 +125,11 @@ function mostrarComidas(recetas) {
     const recetaCard = document.createElement("div");
     recetaCard.className = "receta-card";
 
+    //the second card need another id
+    if (i === 1) {
+      recetaCard.id = "second-card";
+    }
+
     const tituloReceta = document.createElement("h3");
     tituloReceta.className = "title-card";
     tituloReceta.textContent = receta.nombre;
