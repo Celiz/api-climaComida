@@ -34,11 +34,12 @@ def get_provincia(latitude, longitude):
     return {'provincia': data['address']['state']}
 
 def format_provincia_data(data):
-    if data.get("cantidad") != 0:
-        data_provincia = {
-            "provincia": data["ubicacion"]["provincia"]["nombre"]
+    if data.get("provincia"):
+        formatted_data = {
+            "provincia": data["provincia"],
         }
-        return data_provincia
+        print(formatted_data)
+        return formatted_data
     else:
         return None
     
