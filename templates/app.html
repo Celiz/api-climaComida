@@ -1,0 +1,96 @@
+<html>
+<head>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script> 
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+    
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', `/weather?lat=${latitude}&lon=${longitude}`, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        document.getElementById('temperature').textContent = response.temperature + "°C";
+                        document.getElementById('humidity').textContent = response.humidity + "%";
+                        document.getElementById('description').textContent = response.description;
+                        document.getElementById('clouds').textContent = response.clouds + "%";
+                    }
+                };
+                xhr.send();
+            });
+        } else {
+            console.log('Geolocation is not available');
+        }
+        </script>
+        
+</head>
+<body>
+    <div class="container">
+        <div class="left-info">
+            <div class="pic-gradient"></div>
+            <div class="today-info">
+                <h2>...</h2>
+                <span>...</span>
+                <div>
+                    <i class='bx bx-current-location'></i>
+                    <span>...</span>
+                </div>
+            </div>
+            <div class="today-weather">
+                <i class='bx bx-sun'></i>
+                <h1 class="weather-temp">
+                    ...
+                </h1>
+                <h3>...</h3>
+            </div>
+        </div>
+
+        <div class="right-info">
+            <div class="day-info">
+                <div>
+                    <span class="title">...</span>
+                    <span class="value">...</span>
+                </div>
+                <div>
+                    <span class="title">...</span>
+                    <span class="value">...</span>
+                </div>
+                <div>
+                    <span class="title">...</span>
+                    <span class="value">...</span>
+                </div>
+            </div>
+
+            <ul class="days-list">
+                <li>
+                    <i class='bx bx-cloud'></i>
+                    <span>Sat</span>
+                    <span class="day-temp">...</span>
+                </li>
+                <li>
+                    <i class='bx bx-sun'></i>
+                    <span>Sun</span>
+                    <span class="day-temp">...</span>
+                </li>
+                <li>
+                    <i class='bx bx-cloud-rain'></i>
+                    <span>Mon</span>
+                    <span class="day-temp">...</span>
+                </li>
+                <li>
+                    <i class='bx bx-cloud-drizzle'></i>
+                    <span>Tue</span>
+                    <span class="day-temp">...</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="{{url_for('static', filename='js/index.js')}}"></script>
+</body>
+</html>
+
