@@ -113,7 +113,7 @@ function obtenerRecetasSugeridas(region, temperatura) {
 function obtenerFechaActual() {
   const fecha = new Date();
   const dia = fecha.getDate();
-  const mes = fecha.getMonth() + 1; // Los meses se indexan desde 0
+  const mes = fecha.getMonth() + 1; 
   const año = fecha.getFullYear();
   return `${año}-${mes < 10 ? "0" : ""}${mes}-${dia < 10 ? "0" : ""}${dia}`;
 }
@@ -185,7 +185,7 @@ function updateWeatherInfo(data) {
   document.getElementById("description").textContent = data.description;
   locationElement.textContent = `${data.city}, ${data.country}`;
 
-
+  
   const todayPrecipitation =  (`${data.pop}%`);
   const todayHumidity = `${data.humidity}%`;
   const todayWindSpeed = `${data.wind} km/h`;
@@ -194,7 +194,7 @@ function updateWeatherInfo(data) {
   dayInfoContainer.innerHTML = `
     <div>
       <span class="title">Precipitaciones</span>
-      <span class="value">${todayPrecipitation}</span>
+      <span class="value">${(todayPrecipitation)}</span>
     </div>
     <div>
       <span class="title">Humedad</span>
