@@ -186,7 +186,7 @@ function updateWeatherInfo(data) {
   locationElement.textContent = `${data.city}, ${data.country}`;
 
 
-  const todayPrecipitation =  (`${data.pop * 1000}%`);
+  const todayPrecipitation =  (`${data.pop}%`);
   const todayHumidity = `${data.humidity}%`;
   const todayWindSpeed = `${data.wind} km/h`;
 
