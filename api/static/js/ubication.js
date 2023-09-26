@@ -113,7 +113,7 @@ function obtenerRecetasSugeridas(region, temperatura) {
 function obtenerFechaActual() {
   const fecha = new Date();
   const dia = fecha.getDate();
-  const mes = fecha.getMonth() + 1; // Los meses se indexan desde 0
+  const mes = fecha.getMonth() + 1; 
   const año = fecha.getFullYear();
   return `${año}-${mes < 10 ? "0" : ""}${mes}-${dia < 10 ? "0" : ""}${dia}`;
 }
@@ -186,7 +186,7 @@ function updateWeatherInfo(data) {
   locationElement.textContent = `${data.city}, ${data.country}`;
 
 
-  const todayPrecipitation =  (`${data.pop * 1000}%`);
+  const todayPrecipitation =  (`${data.pop * 100}%`);
   const todayHumidity = `${data.humidity}%`;
   const todayWindSpeed = `${data.wind} km/h`;
 
