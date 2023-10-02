@@ -190,8 +190,7 @@ body {
 }
 
 .preparacion-card{
-    text-align: right;
-    margin-left: 100px;
+    text-align: center; 
 }
 
 .recetas-container{
@@ -205,15 +204,28 @@ body {
 
 
 @media screen and (max-width: 1000px) {
+
+    .receta-card{
+        width: 600px;
+        height: 350px;
+    }
+
+    .recetas-container{
+        display: block;
+    }
+
     .container{
         margin-left: 200px;
     }
 
     .receta-card{
-        margin-left: 50px;
+        margin-left: 200px;
+        display: flex;
+        flex-direction: column;
     }
 
     #second-card{
-        margin-left: 80px;
+        margin-top: 50px;
+        margin-left: 200px;
     }
 }
