@@ -1,22 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
   if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const { latitude, longitude } = position.coords;
 
-      fetchWeatherData(latitude, longitude, function (weatherData) {
-        updateWeatherInfo(weatherData);
+        fetchWeatherData(latitude, longitude, function (weatherData) {
+          updateWeatherInfo(weatherData);
 
-        fetchLocationData(latitude, longitude, function (locationData) {
-          const region = encontrarRegion(locationData.provincia);
-          const temperatura = weatherData.temperature;
+          fetchLocationData(latitude, longitude, function (locationData) {
+            const region = encontrarRegion(locationData.provincia);
+            const temperatura = weatherData.temperature;
 
-          const recetasSugeridas = obtenerRecetasSugeridas(region, temperatura);
-          mostrarComidas(recetasSugeridas); 
+            const recetasSugeridas = obtenerRecetasSugeridas(
+              region,
+              temperatura
+            );
+            mostrarComidas(recetasSugeridas);
+          });
         });
-      });
-    }, function (error) {
-      console.error("Error en geolocalización:", error.message);
-    });
+      },
+      function (error) {
+        console.error("Error en geolocalización:", error.message);
+      }
+    );
   } else {
     console.error("El navegador no soporta geolocalización");
   }
@@ -55,58 +61,158 @@ function fetchLocationData(latitude, longitude, callback) {
 }
 
 function obtenerRecetasSugeridas(region, temperatura) {
-  const fechaActual = obtenerFechaActual(); 
+  const fechaActual = obtenerFechaActual();
   const recetasAlmacenadas = localStorage.getItem(`recetas_${fechaActual}`);
   if (recetasAlmacenadas) {
     return JSON.parse(recetasAlmacenadas);
   } else {
-
     const recetasPorRegion = {
       "Región Norte": [
-        { nombre: "Empanadas Salteñas",ingredientes: ["carne molida", "cebolla", "aceitunas", "huevo"], temperaturaIdeal: 25 },
-        { nombre: "Humita en Chala", ingredientes: ["choclo", "queso", "cebolla", "manteca"], temperaturaIdeal: 20 },
+        {
+          nombre: "Empanadas Salteñas",
+          ingredientes: ["carne molida", "cebolla", "aceitunas", "huevo"],
+          temperaturaIdeal: 25,
+        },
+        {
+          nombre: "Humita en Chala",
+          ingredientes: ["choclo", "queso", "cebolla", "manteca"],
+          temperaturaIdeal: 20,
+        },
       ],
       "Región Centro": [
-              { nombre: "Asado Criollo", ingredientes: ["carne asada", "sal", "pimienta"], temperaturaIdeal: 30, pasos: "Paso 1: Preparar la carne asada\nPaso 2: Agregar sal y pimienta\nPaso 3: Cocinar a la parrilla" },
-              { nombre: "Milanesa a la Napolitana", ingredientes: ["filete de carne", "pan rallado", "jamón", "queso", "salsa de tomate"], temperaturaIdeal: 25, pasos: "Paso 1: Preparar el filete de carne\nPaso 2: Empanizar con pan rallado\nPaso 3: Agregar jamón y queso\nPaso 4: Hornear con salsa de tomate" },
-              { nombre: "Ñoquis", ingredientes: ["papa", "harina", "sal"], temperaturaIdeal: 20, pasos: "Paso 1: Preparar la masa con papa, harina y sal\nPaso 2: Formar los ñoquis\nPaso 3: Cocinar en agua hirviendo" },
-              { nombre: "Locro", ingredientes: ["maíz", "carne", "chorizo", "cebolla", "pimiento", "pimentón"], temperaturaIdeal: 15, pasos: "Paso 1: Cocinar maíz y carne\nPaso 2: Agregar chorizo, cebolla y pimiento\nPaso 3: Condimentar con pimentón" },
-              { nombre: "Tarta de Jamón y Queso", ingredientes: ["masa de tarta", "jamón", "queso", "huevos", "crema"], temperaturaIdeal: 10, pasos: "Paso 1: Forrar un molde con la masa de tarta\nPaso 2: Rellenar con jamón y queso\nPaso 3: Mezclar huevos y crema, verter sobre la tarta\nPaso 4: Hornear" },
-              { nombre: "Plato de pastas calientes", ingredientes: ["pasta", "salsa"], temperaturaIdeal: 10, pasos: "Paso 1: Cocinar la pasta\nPaso 2: Preparar la salsa\nPaso 3: Servir caliente" },
-              { nombre: "Polenta", ingredientes: ["harina de maíz", "agua", "sal"], temperaturaIdeal: 10, pasos: "Paso 1: Cocinar la harina de maíz con agua y sal\nPaso 2: Enfriar y cortar en porciones\nPaso 3: Calentar antes de servir" },
-              { nombre: "Sopa o Guiso", ingredientes: ["caldo", "verduras", "carne"], temperaturaIdeal: 10, pasos: "Paso 1: Preparar el caldo\nPaso 2: Agregar verduras y carne\nPaso 3: Cocinar hasta que esté listo" },
-              { nombre: "Puchero", ingredientes: ["carne", "verduras", "legumbres"], temperaturaIdeal: 10, pasos: "Paso 1: Cocinar carne, verduras y legumbres juntas\nPaso 2: Servir caliente" },
-              { nombre: "Salchichas con arroz", ingredientes: ["salchichas", "arroz"], temperaturaIdeal: 15, pasos: "Paso 1: Cocinar las salchichas\nPaso 2: Preparar el arroz\nPaso 3: Servir juntos" },
-              { nombre: "Milanesas o Hamburguesas", ingredientes: ["carne", "pan", "condimentos"], temperaturaIdeal: 15, pasos: "Paso 1: Preparar las milanesas o hamburguesas\nPaso 2: Cocinar en una sartén o parrilla\nPaso 3: Servir en pan con condimentos" },
-              { nombre: "Pizza", ingredientes: ["masa", "salsa de tomate", "queso", "toppings"], temperaturaIdeal: 15, pasos: "Paso 1: Estirar la masa\nPaso 2: Agregar salsa, queso y toppings\nPaso 3: Hornear hasta que esté dorada" },
-              { nombre: "Tarta de JyQ", ingredientes: ["masa de tarta", "jamón", "queso", "huevos", "crema"], temperaturaIdeal: 15, pasos: "Paso 1: Forrar un molde con la masa de tarta\nPaso 2: Rellenar con jamón y queso\nPaso 3: Mezclar huevos y crema, verter sobre la tarta\nPaso 4: Hornear" },
-              { nombre: "Churrasco con ensalada", ingredientes: ["churrasco", "ensalada"], temperaturaIdeal: 20, pasos: "Paso 1: Cocinar el churrasco\nPaso 2: Preparar la ensalada\nPaso 3: Servir juntos" },
-              { nombre: "Omelette", ingredientes: ["huevos", "relleno"], temperaturaIdeal: 20, pasos: "Paso 1: Batir los huevos\nPaso 2: Cocinar en una sartén con el relleno\nPaso 3: Doble la omelette y sirva" },
-              { nombre: "Empanadas", ingredientes: ["masa", "relleno"], temperaturaIdeal: 20, pasos: "Paso 1: Rellenar la masa con el relleno\nPaso 2: Cerrar y sellar las empanadas\nPaso 3: Hornear hasta que estén doradas" },
-              { nombre: "Pollo frito", ingredientes: ["pollo", "harina", "condimentos"], temperaturaIdeal: 20, pasos: "Paso 1: Rebozar el pollo en harina y condimentos\nPaso 2: Freír hasta que esté dorado y cocido" },
-              { nombre: "Ensalada César", ingredientes: ["lechuga", "pollo", "croutons", "salsa"], temperaturaIdeal: 25, pasos: "Paso 1: Preparar la lechuga, pollo y croutons\nPaso 2: Mezclar con salsa y servir" },
-              { nombre: "Tacos", ingredientes: ["tortillas", "carne", "salsas", "verduras"], temperaturaIdeal: 25, pasos: "Paso 1: Preparar la carne y las tortillas\nPaso 2: Agregar salsas y verduras\nPaso 3: Armar los tacos y servir" },
-              { nombre: "Papas Fritas", ingredientes: ["papas", "aceite", "sal"], temperaturaIdeal: 25, pasos: "Paso 1: Cortar las papas en tiras\nPaso 2: Freír en aceite caliente\nPaso 3: Espolvorear con sal y servir" },
-              { nombre: "Tomates rellenos", ingredientes: ["tomates", "relleno"], temperaturaIdeal: 25, pasos: "Paso 1: Vaciar los tomates y rellenar\nPaso 2: Hornear hasta que estén cocidos" },
-              { nombre: "Sanguches de fiambre", ingredientes: ["fiambre", "pan", "condimentos"], temperaturaIdeal: 30, pasos: "Paso 1: Armar el sánguche con fiambre, pan y condimentos\nPaso 2: Servir" },
-              { nombre: "Sushi", ingredientes: ["arroz", "pescado", "alga", "salsa de soja"], temperaturaIdeal: 30, pasos: "Paso 1: Preparar el arroz y los ingredientes\nPaso 2: Armar los rollos de sushi\nPaso 3: Servir con salsa de soja" },
-              { nombre: "Asado", ingredientes: ["carne asada", "sal", "pimienta"], temperaturaIdeal: 30, pasos: "Paso 1: Preparar la carne asada\nPaso 2: Agregar sal y pimienta\nPaso 3: Cocinar a la parrilla" },
-              { nombre: "Picada", ingredientes: ["fiambres", "quesos", "pan", "salsas"], temperaturaIdeal: 30, pasos: "Paso 1: Preparar una selección de fiambres y quesos\nPaso 2: Servir con pan y salsas" }
+        {
+          nombre: "Milanesa a la Napolitana",
+          ingredientes: [
+            "Nalga o cuadrada (según cantidad)",
+            "Queso mozzarella (según cantidad)",
+            "Jamon cocido (según cantidad)",
+            "Una la de puré de tomate",
+            "2 dientes de ajo",
+            "Aceite",
+            "Sal",
+            "Pimienta",
+          ],
+          temperaturaIdeal: 25,
+          pasos: `
+          PARA LA SALSA.
+          Picamos el ajo y la cebolla.
+          Calentamos una olla con aceite, ponemos el ajo y la cebolla dentro y esperamos que la cebolla se transparente.
+          Después, agregamos el puré de tomate y las dos hojas de laurel, deje cocinar por alrededor de 20 minutos.
+          Agregamos sal y pimienta a gusto.
+
+          ARMADO DE MILANESA.
+          Vamos colocar primero, por encima de nuestra milanesa, la salsa que acabamos de hacer.
+          Luego, colocamos unas fetas de jamón cocido.
+          Finalmente, por encima, ponemos nuestro queso.
+          Así, las vamos a llevar al horno 180º hasta que se derrita el queso y chorree por los costados generando el efecto más hermoso y tentador del universo.
+          Al sacarlas podemos tirar por encima unas pizcas de orégano y ¡listo!
+          `,
+        },
+        {
+          nombre: "Ñoquis",
+          ingredientes: [
+            "1kg de papa",
+            "300gr de harina 0000 ",
+            "1 huevo",
+            "sal",
+            "pimienta",
+          ],
+          temperaturaIdeal: 20,
+          pasos: `
+          Lavar bien las papas con cáscara para evitar que absorban demasiada agua al hervirlas.
+          Hacer un corte horizontal en el contorno de las papas y hervirlas hasta que estén tiernas.
+          Pelar las papas mientras aún están calientes y hacer un puré con sal y pimienta.
+          Agregar un huevo batido y harina poco a poco para formar una masa.
+          Cortar tiras de masa y dar forma a los ñoquis con una herramienta o tenedor enharinado.
+          Cocinar los ñoquis en agua hirviendo con sal hasta que floten, luego dejarlos 1 minuto más.
+            
+            `,
+        },
+
+        {
+          nombre: "Masa para pizza",
+          ingredientes: [
+            "1Kg de harina 0000",
+            "50gr de levadura",
+            "1 cucharada de sal",
+            "8 cucharadas de aceite (oliva o girasol)",
+            "2 cucharada de azúcar",
+            "Agua tibia (a ojo)",
+          ],
+          temperaturaIdeal: 20,
+          pasos: `
+          En un bol o taza, colocar la levadura y media taza de agua tibia, agregar una cucharada de azúcar y mezclar hasta que aparezcan burbujas. 
+          Cubrir con un nylon y dejar reposar durante aproximadamente 10 minutos.
+          En otro bol, poner la harina y mezclarla con la sal, hacer un hueco en el centro y verter la media taza de agua con levadura, incorporar el resto del agua tibia y amasar todos los ingredientes con las manos hasta obtener una masa.
+          Agregar el aceite en forma de hilo y continuar amasando.
+          Dejar reposar la masa para pizza durante unos 15 minutos y luego amasarla en una superficie enharinada, dividirla en dos partes del mismo tamaño.
+          Estirar la masa hasta formar un círculo y colocarla en una fuente para pizza, dejar reposar en un lugar cálido hasta que la masa suba un poco, aproximadamente 15 minutos.
+          Precalentar un horno a temperatura alta y hornear la masa durante unos 6 minutos, este paso es crucial para asegurarse de que la masa de pizza quede bien cocida, especialmente en la zona entre los ingredientes y la masa; de lo contrario, esa área quedará húmeda y cruda.
+          Agregar una generosa cucharada de salsa de tomate a la masa y hornear durante 2 minutos adicionales.
+          `,
+        },
+
+        {
+          nombre: "Tacos de carne",
+          ingredientes: [
+            "1kg de carne (peceto, nalga o lo que mas te guste)",
+            "4 cebollas morada mediana",
+            "3 dientes de ajo",
+            "2 morrones rojos",
+            "2 morrones verdes",
+            "2 tomates mediano",
+            "Sal y pimienta",
+            "Cilantro",
+            "Aceite neutro",
+            "Jugo de 1 lima o limon",
+          ],
+          temperaturaIdeal: 20,
+          pasos: `
+          Cortar los morrones y la cebolla en juliana, el ajo y el chile bien bien pequeño y el tomate en cubitos, reservar por separado.
+          Cortar la carne en tiritas y en un bol salpimentar, agregar la mitad del zumo de lima o limón y dejar macerando unos 20 minutos.
+          Si quieren, en este paso pueden hacer la magia que les guste para darle sabor a la carne: ponerle mostaza, un chorro de cerveza… Lo que ustedes quieran, la idea es que los tacos de carne queden bien sabrosos así que todo vale. 
+          En una sartén poner un chorro de aceite, el chile seco y el orégano y calentar unos 2 o 3 minutos. Agregar el ajo y el chile y sofreír unos minutos más.
+          Agregar la carne y saltear, después de 5 minutos, a mitad de cocción, sumar el tomate y terminar de cocinar.
+          Por otro lado, saltear el resto de las verduras hasta que estén cocidas pero OJO: que estén firmes.
+          Mezclar las dos preparaciones y rectificamos con sal y pimienta de ser necesario. Le agregamos el resto del zumo de lima o limón y el cilantro deshojado.
+          `,
+        },
       ],
       "Región Noreste": [
-        { nombre: "Chipá", ingredientes: ["almidón de mandioca", "queso", "huevo"], temperaturaIdeal: 30 },
-        { nombre: "Sopa Paraguaya", ingredientes: ["harina de maíz", "cebolla", "queso", "leche"], temperaturaIdeal: 25 },
-      
+        {
+          nombre: "Chipá",
+          ingredientes: ["almidón de mandioca", "queso", "huevo"],
+          temperaturaIdeal: 30,
+        },
+        {
+          nombre: "Sopa Paraguaya",
+          ingredientes: ["harina de maíz", "cebolla", "queso", "leche"],
+          temperaturaIdeal: 25,
+        },
       ],
       "Región Cuyo": [
-        { nombre: "Carbonada", ingredientes: ["carne", "papa", "choclo", "cebolla", "tomate"], temperaturaIdeal: 30 },
-        { nombre: "Pastelitos", ingredientes: ["masa para pastelitos", "dulce de membrillo"], temperaturaIdeal: 25 },
-      
+        {
+          nombre: "Carbonada",
+          ingredientes: ["carne", "papa", "choclo", "cebolla", "tomate"],
+          temperaturaIdeal: 30,
+        },
+        {
+          nombre: "Pastelitos",
+          ingredientes: ["masa para pastelitos", "dulce de membrillo"],
+          temperaturaIdeal: 25,
+        },
       ],
       "Región Patagónica": [
-        { nombre: "Cordero Patagónico", ingredientes: ["cordero", "papa", "cebolla", "zanahoria"], temperaturaIdeal: 30 },
-        { nombre: "Tortas Fritas", ingredientes: ["harina", "levadura", "agua", "sal"], temperaturaIdeal: 25 },
-        
+        {
+          nombre: "Cordero Patagónico",
+          ingredientes: ["cordero", "papa", "cebolla", "zanahoria"],
+          temperaturaIdeal: 30,
+        },
+        {
+          nombre: "Tortas Fritas",
+          ingredientes: ["harina", "levadura", "agua", "sal"],
+          temperaturaIdeal: 25,
+        },
       ],
     };
 
@@ -118,12 +224,17 @@ function obtenerRecetasSugeridas(region, temperatura) {
     if (recetasSugeridas.length >= 2) {
       const recetasAleatorias = [];
       while (recetasAleatorias.length < 2) {
-        const indiceAleatorio = Math.floor(Math.random() * recetasSugeridas.length);
+        const indiceAleatorio = Math.floor(
+          Math.random() * recetasSugeridas.length
+        );
         recetasAleatorias.push(recetasSugeridas[indiceAleatorio]);
         recetasSugeridas.splice(indiceAleatorio, 1); // Evita duplicados
       }
-    
-      localStorage.setItem(`recetas_${fechaActual}`, JSON.stringify(recetasAleatorias));
+
+      localStorage.setItem(
+        `recetas_${fechaActual}`,
+        JSON.stringify(recetasAleatorias)
+      );
       return recetasAleatorias;
     } else {
       return recetasSugeridas;
@@ -134,7 +245,7 @@ function obtenerRecetasSugeridas(region, temperatura) {
 function obtenerFechaActual() {
   const fecha = new Date();
   const dia = fecha.getDate();
-  const mes = fecha.getMonth() + 1; 
+  const mes = fecha.getMonth() + 1;
   const año = fecha.getFullYear();
   return `${año}-${mes < 10 ? "0" : ""}${mes}-${dia < 10 ? "0" : ""}${dia}`;
 }
@@ -157,7 +268,8 @@ function mostrarComidas(recetas) {
     recetaCard.appendChild(tituloReceta);
     const preparacionReceta = document.createElement("p");
     preparacionReceta.className = "preparacion-card";
-    preparacionReceta.textContent = "Preparación: " + receta.pasos; 
+    preparacionReceta.innerHTML =
+      "Preparación: " + "<br><br>" + receta.pasos.replace(/\.\s/g, ".<br>");
     const ingredientesReceta = document.createElement("ul");
     ingredientesReceta.className = "ingredientes-card";
     receta.ingredientes.forEach((ingrediente) => {
@@ -205,7 +317,7 @@ function updateWeatherInfo(data) {
   document.getElementById("description").textContent = data.description;
   locationElement.textContent = `${data.city}, ${data.country}`;
 
-  const todayPrecipitation =  (`${data.pop}%`);
+  const todayPrecipitation = `${data.pop}%`;
   const todayHumidity = `${data.humidity}%`;
   const todayWindSpeed = `${data.wind} km/h`;
 
@@ -213,7 +325,7 @@ function updateWeatherInfo(data) {
   dayInfoContainer.innerHTML = `
     <div>
       <span class="title">Precipitaciones</span>
-      <span class="value">${(todayPrecipitation)}</span>
+      <span class="value">${todayPrecipitation}</span>
     </div>
     <div>
       <span class="title">Humedad</span>
@@ -244,20 +356,40 @@ function updateWeatherInfo(data) {
 function encontrarRegion(provincia) {
   const datos = {
     "Región Norte": {
-      "provincias": ["Salta", "Jujuy", "Tucumán", "Catamarca", "La Rioja", "Santiago del Estero"]
+      provincias: [
+        "Salta",
+        "Jujuy",
+        "Tucumán",
+        "Catamarca",
+        "La Rioja",
+        "Santiago del Estero",
+      ],
     },
     "Región Noreste": {
-      "provincias": ["Formosa", "Chaco", "Corrientes", "Misiones"]
+      provincias: ["Formosa", "Chaco", "Corrientes", "Misiones"],
     },
     "Región Centro": {
-      "provincias": ["Córdoba", "Santa Fe", "Entre Ríos", "La Pampa", "Buenos Aires", "Ciudad Autónoma de Buenos Aires"]
+      provincias: [
+        "Córdoba",
+        "Santa Fe",
+        "Entre Ríos",
+        "La Pampa",
+        "Buenos Aires",
+        "Ciudad Autónoma de Buenos Aires",
+      ],
     },
     "Región Cuyo": {
-      "provincias": ["Mendoza", "San Juan", "San Luis"]
+      provincias: ["Mendoza", "San Juan", "San Luis"],
     },
     "Región Patagónica": {
-      "provincias": ["Neuquén", "Río Negro", "Chubut", "Santa Cruz", "Tierra del Fuego, Antártida e Islas del Atlántico Sur"]
-    }
+      provincias: [
+        "Neuquén",
+        "Río Negro",
+        "Chubut",
+        "Santa Cruz",
+        "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+      ],
+    },
   };
   for (const region in datos) {
     if (datos[region].provincias.includes(provincia)) {
