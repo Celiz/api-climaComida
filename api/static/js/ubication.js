@@ -62,6 +62,7 @@ function fetchLocationData(latitude, longitude, callback) {
 
 function obtenerRecetasSugeridas(region, temperatura) {
   const fechaActual = obtenerFechaActual();
+  
   const recetasAlmacenadas = localStorage.getItem(`recetas_${fechaActual}`);
   if (recetasAlmacenadas) {
     return JSON.parse(recetasAlmacenadas);

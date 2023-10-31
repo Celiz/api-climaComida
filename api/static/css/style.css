@@ -8,6 +8,7 @@
 }
 
 body {
+    background-color: rgb(180, 180, 180, .75);
     height: 100vh;
 }
 
