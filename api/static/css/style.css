@@ -29,6 +29,7 @@ body {
 }
 
 .left-info {
+    padding: 25px;
     width: 260px;
     height: 300px;
     float: left;
@@ -174,6 +175,7 @@ body {
     margin-left: auto;
     width: auto;
     height: auto;
+    padding: 10px;
     max-width: 600px;
     background-color: #596f8d;
     color: #fff;
@@ -183,7 +185,6 @@ body {
 
 .title-card{
     text-align: center;
-    margin: 0 auto;
 }
 
 .ingredientes-card{
@@ -202,6 +203,7 @@ body {
 }
 
 #second-card{
+    padding: 10px;
     margin-left: 200px;
 }
 
@@ -233,5 +235,9 @@ body {
         margin-top: 50px;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    #title-card{
+        text-align: center;
     }
 }
